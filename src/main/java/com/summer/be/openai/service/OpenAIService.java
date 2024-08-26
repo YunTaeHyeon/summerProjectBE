@@ -104,7 +104,7 @@ public class OpenAIService {
         sentencesRepository.save(saveSentences);
     }
 
-    public List<Learnings> findOpenAI() {
+    public List<Learnings> getLearnings() {
         return learningsRepository.findAll();
     }
 }
