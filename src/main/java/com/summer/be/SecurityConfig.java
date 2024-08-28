@@ -25,7 +25,7 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     private static final String[] PUBLIC_URI = {
-            "/swagger-ui/**", "/api-docs/**", "/api/user/**", "/**" //-> 모든 보안 설정 해제
+            "/swagger-ui/**", "/api-docs/**", "/api/user/**", "/api/openai/**" //-> 모든 보안 설정 해제
     };
 
     private static final String[] ADMIN_URI = {
