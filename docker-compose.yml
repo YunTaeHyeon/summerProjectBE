@@ -29,10 +29,10 @@ services:
 
 
   backend:
-    #image: yuntaehyeon/speech #docker hub에 올릴 때
-    build:
-      context: .
-      dockerfile: Dockerfile #image 사용하면 주석처리
+    image: yuntaehyeon/speech #docker hub에 올릴 때
+    #build:
+    #  context: .
+    #  dockerfile: Dockerfile #image 사용하면 주석처리
     restart: on-failure
     ports:
       - "8080:8080"
