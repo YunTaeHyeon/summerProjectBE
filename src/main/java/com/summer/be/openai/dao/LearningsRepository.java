@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LearningsRepository extends JpaRepository<Learnings, Long> {
-    @Query("SELECT u.id FROM Learnings u ORDER BY u.id DESC LIMIT 1")
+    @Query(value = "select learnings_id from learnings ORDER BY learnings_id desc limit 1", nativeQuery = true )
     Long findTopIdByOrderByIdDesc();
+
+    @Query("SELECT l.topic FROM Learnings l WHERE l.id = :id")
     String findTopicById(Long id);
 }
