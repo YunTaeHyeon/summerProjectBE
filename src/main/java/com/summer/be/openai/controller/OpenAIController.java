@@ -53,6 +53,7 @@ public class OpenAIController {
             description = "Success 추천 Get"
     )
     @GetMapping("/getLearnings")
+    @ResponseBody
     public String getLearnings() {
         String topic = openAIService.getLearnings();
         return topic;
