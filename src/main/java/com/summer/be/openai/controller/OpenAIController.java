@@ -43,4 +43,17 @@ public class OpenAIController {
 
         return "ok";
     }
+
+    @Operation(
+            summary = "추천 내용",
+            description = "생성된 오늘의 추천을 보여드립니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Success 추천 Get"
+    )
+    public List<Learnings> getLearnings() {
+        List<Learnings> learnings = openAIService.getLearnings();
+        return learnings;
+    }
 }
