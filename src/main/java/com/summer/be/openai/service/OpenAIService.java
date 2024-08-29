@@ -104,7 +104,9 @@ public class OpenAIService {
         sentencesRepository.save(saveSentences);
     }
 
-    public List<Learnings> getLearnings() {
-        return learningsRepository.findAll();
+    public String getLearnings() {
+        Long id = learningsRepository.findTopIdByOrderByIdDesc();
+        String topic = learningsRepository.findTopicById(id);
+        return topic;
     }
 }
