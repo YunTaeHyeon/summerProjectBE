@@ -52,6 +52,7 @@ public class OpenAIController {
             responseCode = "200",
             description = "Success 추천 Get"
     )
+    @GetMapping("/getLearnings")
     public List<Learnings> getLearnings() {
         List<Learnings> learnings = openAIService.getLearnings();
         return learnings;
