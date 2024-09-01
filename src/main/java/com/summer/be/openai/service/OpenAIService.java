@@ -40,7 +40,7 @@ public class OpenAIService {
     }
 
     public List<String> getSentencesUsingPhrase(String phrase) {
-        String prompt = String.format("Generate 2 sentences using the topic '%s'.", phrase);
+        String prompt = String.format("Generate 10 sentences using the topic '%s'.", phrase);
         String response = getCompletion(prompt);
 
         String[] sentences = response.split("\n");
@@ -51,7 +51,7 @@ public class OpenAIService {
     }   // 문장을 만드는 공간 (문장 스피킹 파트)
 
     public List<String> getVocabularyUsingPhrase(String phrase) {
-        String prompt = String.format("Generate 2 vocabularies using the topic '%s'.", phrase);
+        String prompt = String.format("Generate 10 vocabularies using the topic '%s'.", phrase);
         String response = getCompletion(prompt);
 
         String[] vocabulary = response.split("\n");
