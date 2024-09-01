@@ -58,4 +58,18 @@ public class OpenAIController {
         String topic = openAIService.getLearnings();
         return topic;
     }
+
+
+    @Operation(
+            summary = "Get Vocabularies",
+            description = "생성된 오늘의 단어들을 보여드립니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Success Voca Get"
+    )
+    @GetMapping("/getVocabulary")
+    public List<String> getVocabulary() {
+        return openAIService.getVocabulary();
+    }
 }

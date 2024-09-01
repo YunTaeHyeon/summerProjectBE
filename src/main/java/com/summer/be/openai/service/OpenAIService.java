@@ -1,6 +1,7 @@
 package com.summer.be.openai.service;
 
 
+import com.google.gson.Gson;
 import com.summer.be.openai.dao.LearningsRepository;
 import com.summer.be.openai.dao.SentencesRepository;
 import com.summer.be.openai.dao.VocabularyRepository;
@@ -109,4 +110,18 @@ public class OpenAIService {
         String topic = learningsRepository.findTopicById(id);
         return topic;
     }
+
+    public List<String> getVocabulary() {
+        // 가장 최근에 저장된 Vocabulary ID를 가져옴
+        Long id = learningsRepository.findTopIdByOrderByIdDesc();
+
+        // ID로 Vocabulary 조회
+        String vocabularyJson = vocabularyRepository.findVocabularyById(id);
+
+        // JSON 형태로 저장된 Vocabulary 문자열을 List<String> 형태로 변환
+        Gson gson = new Gson();
+        List<String> vocabularyList = gson.fromJson(vocabularyJson, List.class);
+
+        return vocabularyList;
+    }   // 저장된 Voca 가져오기
 }
