@@ -124,4 +124,18 @@ public class OpenAIService {
 
         return vocabularyList;
     }   // 저장된 Voca 가져오기
+
+    public List<String> getSentences() {
+        // 가장 최근에 저장된 Vocabulary ID를 가져옴
+        Long id = learningsRepository.findTopIdByOrderByIdDesc();
+
+        // ID로 Vocabulary 조회
+        String sentencesJson = sentencesRepository.findSentencesById(id);
+
+        // JSON 형태로 저장된 Vocabulary 문자열을 List<String> 형태로 변환
+        Gson gson = new Gson();
+        List<String> sentencesList = gson.fromJson(sentencesJson, List.class);
+
+        return sentencesList;
+    }   // 저장된 sentences 가져오기
 }

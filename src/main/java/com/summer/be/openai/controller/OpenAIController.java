@@ -72,4 +72,17 @@ public class OpenAIController {
     public List<String> getVocabulary() {
         return openAIService.getVocabulary();
     }
+
+    @Operation(
+            summary = "Get Sentences",
+            description = "생성된 오늘의 문장들을 보여드립니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Success Sentences Get"
+    )
+    @GetMapping("/getSentences")
+    public List<String> getSentences() {
+        return openAIService.getSentences();
+    }
 }
