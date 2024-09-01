@@ -4,7 +4,7 @@ client:
 
 openai.api.key: sk-proj-3VOx7ZLbK1ipsbP6ZsmIT3BlbkFJOXu9eTeQO2wt0AC4lrOz
 
-#openai.api.api-key: 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
+openai.api.api-key: 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
 
 custom:
   jwt:
