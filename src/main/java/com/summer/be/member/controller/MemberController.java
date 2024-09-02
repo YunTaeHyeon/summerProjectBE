@@ -80,4 +80,10 @@ public class MemberController {
         return ResponseEntity.ok(tokenRequestAndResponseDto);
         //return ResponseEntity.ok(memberService.reissue(tokenRequestDto));
     }
+
+    @PostMapping("/logout")
+    @ResponseStatus(HttpStatus.OK)
+    public void logout(@RequestBody TokenRequestAndResponseDto tokenRequestDto) {
+        memberService.logout(tokenRequestDto);
+    }
 }
