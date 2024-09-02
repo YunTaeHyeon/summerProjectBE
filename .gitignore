@@ -40,8 +40,8 @@ out/
 db/mysql/
 
 # Ignore application-private.yml
-application-private.yml
+docker-compose.yml
 
 # Ignore all yml
 # all
-*.yml
+private.yml

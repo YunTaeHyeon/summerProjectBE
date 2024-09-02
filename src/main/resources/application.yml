@@ -1,0 +1,54 @@
+data.rest:
+  base-path: /api
+  detection-strategy: annotated
+
+spring:
+  config:
+    import: private.yml
+  profiles:
+    include: private
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+    default-property-inclusion: non_null
+    serialization-inclusion: non_null
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysqldb:3306/summer?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: root
+    password: 1224
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        show_sql: true
+        highlight: true
+        default_batch_fetch_size: 100
+  data:
+    redis:
+      host: redis
+      port: 6379
+server:
+  port: 8080
+
+springdoc:
+  version: '@project.version@'
+  api-docs:
+    path: /api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+    doc-expansion: none
+  paths-to-match:
+    - /api/**
