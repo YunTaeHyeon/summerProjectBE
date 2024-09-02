@@ -1,6 +1,7 @@
 package com.summer.be.openai.service;
 
 
+import com.google.gson.Gson;
 import com.summer.be.openai.dao.LearningsRepository;
 import com.summer.be.openai.dao.SentencesRepository;
 import com.summer.be.openai.dao.VocabularyRepository;
@@ -10,6 +11,7 @@ import com.summer.be.openai.entity.Learnings;
 import com.summer.be.openai.entity.Sentences;
 import com.summer.be.openai.entity.Vocabulary;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class OpenAIService {
 
@@ -39,7 +42,7 @@ public class OpenAIService {
     }
 
     public List<String> getSentencesUsingPhrase(String phrase) {
-        String prompt = String.format("Generate 2 sentences using the topic '%s'.", phrase);
+        String prompt = String.format("Generate 2 sentences using the topic '%s' in english.", phrase);
         String response = getCompletion(prompt);
 
         String[] sentences = response.split("\n");
@@ -47,7 +50,7 @@ public class OpenAIService {
         Collections.addAll(sentenceList, sentences);
 
         return sentenceList;
-    }   // 문장을 만드는 공간 (문장 스피킹 파트)
+    }
 
     public List<String> getVocabularyUsingPhrase(String phrase) {
         String prompt = String.format("Generate 2 vocabularies using the topic '%s'.", phrase);
@@ -58,7 +61,7 @@ public class OpenAIService {
         Collections.addAll(vocaList, vocabulary);
 
         return vocaList;
-    }   // 보카를 만드는 부분
+    }
 
     private String getCompletion(String prompt) {
         RestTemplate restTemplate = new RestTemplate();
@@ -67,7 +70,7 @@ public class OpenAIService {
         headers.set("Content-Type", "application/json");
 
         Message userMessage = new Message("user", prompt);
-        OpenAIRequest request = new OpenAIRequest("ft:gpt-4o-mini-2024-07-18:personal::9zfcDZXf", Collections.singletonList(userMessage));  // gpt-4o-mini 모델은 제한 사항이 있어 3.5-turbo 모델 기반으로 튜닝 작업 했습니다.
+        OpenAIRequest request = new OpenAIRequest("ft:gpt-4o-mini-2024-07-18:personal::9zfcDZXf", Collections.singletonList(userMessage));
 
         try {
             HttpEntity<OpenAIRequest> entity = new HttpEntity<>(request, headers);
@@ -81,15 +84,15 @@ public class OpenAIService {
         } catch (Exception e) {
             e.printStackTrace();
             return "Error occurred: " + e.getMessage();
-        }   // http 요청, 응답 예외처리 추가
+        }
     }
 
     public Learnings saveLearning(String recommendedPhrase) {
         LearningsDto learningsDto = new LearningsDto(recommendedPhrase);
-        Learnings learnings = learningsDto.toEntity();
-        learningsRepository.save(learnings);
+        Learnings openAI = learningsDto.toEntity();
+        learningsRepository.save(openAI);
 
-        return learnings;
+        return openAI;
     }
 
     public void saveVoca(List<String> voca, Learnings learnings) {
@@ -104,7 +107,42 @@ public class OpenAIService {
         sentencesRepository.save(saveSentences);
     }
 
-    public List<Learnings> getLearnings() {
+    public List<Learnings> findOpenAI() {
         return learningsRepository.findAll();
+    }
+
+    public String getLearnings() {
+        Long id = learningsRepository.findTopIdByOrderByIdDesc(); // 이건 나중에 분리하자. voca와 sentence 가져올 때도 id 이용해야함
+        String topic = learningsRepository.findTopicById(id);
+        return topic;
+    }
+
+    public List<String> getVocabulary() {
+        // 가장 최근에 저장된 Vocabulary ID를 가져옴
+        Long id = learningsRepository.findTopIdByOrderByIdDesc();
+
+        // ID로 Vocabulary 조회
+        String vocabularyJson = vocabularyRepository.findVocabularyById(id);
+
+        // JSON 형태로 저장된 Vocabulary 문자열을 List<String> 형태로 변환
+        Gson gson = new Gson();
+        List<String> vocabularyList = gson.fromJson(vocabularyJson, List.class);
+
+        return vocabularyList;
+    }   // 저장된 Voca 가져오기
+
+
+    public List<String> getSentences() {
+        // 가장 최근에 저장된 Vocabulary ID를 가져옴
+        Long id = learningsRepository.findTopIdByOrderByIdDesc();
+
+        // ID로 Sentences 조회
+        String sentencesJson = sentencesRepository.findSentencesById(id);
+
+        // JSON 형태로 저장된 sentences 문자열을 List<String> 형태로 변환
+        Gson gson = new Gson();
+        List<String> sentencesList = gson.fromJson(sentencesJson, List.class);
+
+        return sentencesList;
     }
 }
