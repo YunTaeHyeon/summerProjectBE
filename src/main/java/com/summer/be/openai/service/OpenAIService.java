@@ -93,19 +93,19 @@ public class OpenAIService {
         learningsRepository.save(openAI);
 
         return openAI;
-    }
+    }   // List 10개가 안될 시 재 요청
 
     public void saveVoca(List<String> voca, Learnings learnings) {
         VocabularyDto vocabularyDto = new VocabularyDto(voca, learnings);
         Vocabulary saveVoca = vocabularyDto.toEntity();
         vocabularyRepository.save(saveVoca);
-    }
+    }   // List 10개가 안될 시 재 요청
 
     public void saveSentences(List<String> sentences, Learnings learnings) {
         SentencesDto sentencesDto = new SentencesDto(sentences, learnings);
         Sentences saveSentences = sentencesDto.toEntity();
         sentencesRepository.save(saveSentences);
-    }
+    }   //
 
     public List<Learnings> findOpenAI() {
         return learningsRepository.findAll();
