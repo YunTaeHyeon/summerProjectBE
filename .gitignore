@@ -40,7 +40,7 @@ out/
 db/mysql/
 
 # Ignore application-private.yml
-docker-compose.yml
+# docker-compose.yml 얘는 ignore 하면 안됩니다.
 
 # Ignore all yml
 # all
