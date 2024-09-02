@@ -43,4 +43,5 @@ db/mysql/
 application-private.yml
 
 # Ignore all yml
+# all
 *.yml
