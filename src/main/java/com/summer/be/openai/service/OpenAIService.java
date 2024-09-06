@@ -18,7 +18,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -37,10 +41,6 @@ public class OpenAIService {
     private final LearningsRepository learningsRepository;
     private final VocabularyRepository vocabularyRepository;
     private final SentencesRepository sentencesRepository;
-
-    public String returnApiKey() {
-        return openaiApiKey;
-    }   // 키 값 확인
 
     public String getRecommendedPhrase() {
         return getCompletion("Can you recommend a topic for daily English practice?");  // 하루에 어떤 주제를 선정할지 추천해줍니다.
@@ -72,6 +72,8 @@ public class OpenAIService {
 
     private String getCompletion(String prompt) {
         RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + openaiApiKey);
         headers.set("Content-Type", "application/json");
@@ -112,7 +114,7 @@ public class OpenAIService {
         SentencesDto sentencesDto = new SentencesDto(sentences, learnings);
         Sentences saveSentences = sentencesDto.toEntity();
         sentencesRepository.save(saveSentences);
-    }   //
+    }
 
     public List<Learnings> findOpenAI() {
         return learningsRepository.findAll();
