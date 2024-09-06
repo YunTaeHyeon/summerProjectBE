@@ -133,4 +133,12 @@ public class MemberService {
     public List<Member> findAll() {
         return memberRepository.findAll();
     }
+
+    @Transactional
+    public void changeLevel(String kakaoAccountId, EnglishLevel englishLevel) {
+        Member member = memberRepository.findByKakaoAccountId(kakaoAccountId)
+                .orElseThrow(() -> new CustomUnauthorizedException("존재하지 않는 계정입니다."));
+
+        member.changeLevel(englishLevel);
+    }
 }
