@@ -17,6 +17,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -37,6 +38,10 @@ public class OpenAIService {
     private final VocabularyRepository vocabularyRepository;
     private final SentencesRepository sentencesRepository;
 
+    public String returnApiKey() {
+        return openaiApiKey;
+    }   // 키 값 확인
+
     public String getRecommendedPhrase() {
         return getCompletion("Can you recommend a topic for daily English practice?");  // 하루에 어떤 주제를 선정할지 추천해줍니다.
     }
@@ -49,6 +54,7 @@ public class OpenAIService {
         List<String> sentenceList = new ArrayList<>();
         Collections.addAll(sentenceList, sentences);
 
+        // List 10개 안될 시, 이쪽 부근에 조건문 시작
         return sentenceList;
     }
 
@@ -60,6 +66,7 @@ public class OpenAIService {
         List<String> vocaList = new ArrayList<>();
         Collections.addAll(vocaList, vocabulary);
 
+        // List 10개 안될 시, 이쪽 부근에 조건문 시작
         return vocaList;
     }
 
