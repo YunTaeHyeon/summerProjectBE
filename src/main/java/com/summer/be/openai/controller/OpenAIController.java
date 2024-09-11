@@ -26,8 +26,8 @@ public class OpenAIController {
     private OpenAIService openAIService;
 
     @Operation(
-            summary = "문장 생성",
-            description = "오늘의 추천 주제 기반으로 문장 10개를 생성합니다."
+            summary = "오늘의 수업 생성 부분입니다",
+            description = "주제를 생성하고 주제를 기반으로 자동으로 단어 10개와 문장 10개를 생성합니다."
     )
     @ApiResponse(
             responseCode = "200",
@@ -70,8 +70,8 @@ public class OpenAIController {
 
 
     @Operation(
-            summary = "추천 내용",
-            description = "생성된 오늘의 추천을 보여드립니다."
+            summary = "문장 수업",
+            description = "오늘 생성한 추천을 기반으로 문장 10개를 생성합니다."
     )
     @ApiResponse(
             responseCode = "200",
@@ -86,8 +86,8 @@ public class OpenAIController {
 
 
     @Operation(
-            summary = "Get Vocabularies",
-            description = "생성된 오늘의 단어들을 보여드립니다."
+            summary = "단어 수업",
+            description = "오늘 생성한 추천을 기반으로 단어 10개를 생성합니다."
     )
     @ApiResponse(
             responseCode = "200",
@@ -113,7 +113,7 @@ public class OpenAIController {
 
     @Operation(
             summary = "Get key",
-            description = "키 값 확인용"
+            description = "키 값 확인용, 사용 X"
     )
     @ApiResponse(
             responseCode = "200",
