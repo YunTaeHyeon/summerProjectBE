@@ -110,17 +110,4 @@ public class OpenAIController {
     public List<String> getSentences() {
         return openAIService.getSentences();
     }
-
-    @Operation(
-            summary = "Get key",
-            description = "키 값 확인용, 사용 X"
-    )
-    @ApiResponse(
-            responseCode = "200",
-            description = "key get"
-    )
-    @GetMapping("/getKey")
-    public String key() {
-        return openAIService.returnApiKey();
-    }
 }
