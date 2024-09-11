@@ -13,6 +13,11 @@ import com.summer.be.openai.entity.Vocabulary;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -20,7 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,24 +47,26 @@ public class OpenAIService {
     }
 
     public List<String> getSentencesUsingPhrase(String phrase) {
-        String prompt = String.format("Generate 2 sentences using the topic '%s' in english.", phrase);
+        String prompt = String.format("Generate 10 sentences using the topic '%s' in english.", phrase);
         String response = getCompletion(prompt);
 
         String[] sentences = response.split("\n");
         List<String> sentenceList = new ArrayList<>();
         Collections.addAll(sentenceList, sentences);
 
+        // List 10개 안될 시, 이쪽 부근에 조건문 시작
         return sentenceList;
     }
 
     public List<String> getVocabularyUsingPhrase(String phrase) {
-        String prompt = String.format("Generate 2 vocabularies using the topic '%s'.", phrase);
+        String prompt = String.format("Generate 10 vocabularies using the topic '%s'.", phrase);
         String response = getCompletion(prompt);
 
         String[] vocabulary = response.split("\n");
         List<String> vocaList = new ArrayList<>();
         Collections.addAll(vocaList, vocabulary);
 
+        // List 10개 안될 시, 이쪽 부근에 조건문 시작
         return vocaList;
     }
 
@@ -96,13 +102,13 @@ public class OpenAIService {
         learningsRepository.save(openAI);
 
         return openAI;
-    }
+    }   // List 10개가 안될 시 재 요청
 
     public void saveVoca(List<String> voca, Learnings learnings) {
         VocabularyDto vocabularyDto = new VocabularyDto(voca, learnings);
         Vocabulary saveVoca = vocabularyDto.toEntity();
         vocabularyRepository.save(saveVoca);
-    }
+    }   // List 10개가 안될 시 재 요청
 
     public void saveSentences(List<String> sentences, Learnings learnings) {
         SentencesDto sentencesDto = new SentencesDto(sentences, learnings);
