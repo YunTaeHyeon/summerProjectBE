@@ -27,7 +27,7 @@ public class OpenAIController {
 
     @Operation(
             summary = "오늘의 수업 생성 부분입니다",
-            description = "주제를 생성하고 주제를 기반으로 자동으로 단어 10개와 문장 10개를 생성합니다."
+            description = "이 부분을 클릭하면 오늘의 주제와 단어, 문장을 생성합니다. [Post 요청 후 오늘의 문장 및 단어 확인 가능]"
     )
     @ApiResponse(
             responseCode = "200",
@@ -70,8 +70,8 @@ public class OpenAIController {
 
 
     @Operation(
-            summary = "문장 수업",
-            description = "오늘 생성한 추천을 기반으로 문장 10개를 생성합니다."
+            summary = "오늘의 주제",
+            description = "생성된 오늘의 주제입니다."
     )
     @ApiResponse(
             responseCode = "200",

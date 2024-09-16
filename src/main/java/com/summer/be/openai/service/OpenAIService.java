@@ -50,7 +50,7 @@ public class OpenAIService {
         List<String> sentenceList = new ArrayList<>();
         int makeCount = 10;
         while (sentenceList.size() < 10) {
-            String prompt = String.format("Generate %d sentences using the topic '%s'.", makeCount, phrase);
+            String prompt = String.format("Generate %d sentences using the topic '%s'.", makeCount, phrase);    // member에 설정된 레벨 적용 예정
             String response = getCompletion(prompt);
 
             String[] sentences = response.split("\n");
@@ -78,7 +78,7 @@ public class OpenAIService {
         List<String> vocaList = new ArrayList<>();
         int makeCount = 10;
         while (vocaList.size() < 10) {
-            String prompt = String.format("Generate %d vocabularies using the topic '%s'.", makeCount, phrase);
+            String prompt = String.format("Generate %d vocabularies using the topic '%s'.", makeCount, phrase); // member에 설정된 레벨 적용 예정
             String response = getCompletion(prompt);
 
             String[] vocabulary = response.split("\n");
