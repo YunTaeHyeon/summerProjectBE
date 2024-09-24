@@ -48,53 +48,23 @@ public class OpenAIService {
 
     public List<String> getSentencesUsingPhrase(String phrase) {
         List<String> sentenceList = new ArrayList<>();
-        int makeCount = 10;
-        while (sentenceList.size() < 10) {
-            String prompt = String.format("Generate %d sentences using the topic '%s'.", makeCount, phrase);    // member에 설정된 레벨 적용 예정
-            String response = getCompletion(prompt);
 
-            String[] sentences = response.split("\n");
-            Collections.addAll(sentenceList, sentences);
+        String prompt = String.format("Generate 10 sentences using the topic '%s'.", phrase);
+        String response = getCompletion(prompt);
 
-            for (int i = 0; i < sentenceList.size(); i++) {
-                log.info(sentenceList.get(i));
-            }
-
-            makeCount = 10 - sentenceList.size();    // 정해진 10개 수 기준으로 차이 계산
-            if (makeCount < 0) {
-                makeCount = Math.abs(makeCount);    // 0 미만이라면 단어 개수 10개 초과
-
-                for (int i = 0; i < makeCount; i++) {
-                    sentenceList.remove(11 + i);    // 개수 만큼 삭제
-                }
-            }   // 새로 만들기 보단 특정 개수를 채우는 것이 좋다고 판단
-
-            log.info("sentences makeCount 개수 : " + makeCount);
-        }
+        String[] sentences = response.split("\n");
+        Collections.addAll(sentenceList, sentences);
         return sentenceList;
     }
 
     public List<String> getVocabularyUsingPhrase(String phrase) {
         List<String> vocaList = new ArrayList<>();
-        int makeCount = 10;
-        while (vocaList.size() < 10) {
-            String prompt = String.format("Generate %d vocabularies using the topic '%s'.", makeCount, phrase); // member에 설정된 레벨 적용 예정
-            String response = getCompletion(prompt);
+        String prompt = String.format("Generate 10 vocabularies using the topic '%s'.", phrase);
+        String response = getCompletion(prompt);
 
-            String[] vocabulary = response.split("\n");
-            Collections.addAll(vocaList, vocabulary);
+        String[] vocabulary = response.split("\n");
+        Collections.addAll(vocaList, vocabulary);
 
-            makeCount -= vocaList.size();    // 정해진 10개 수 기준으로 차이 계산
-            if (makeCount < 0) {
-                makeCount = Math.abs(makeCount);    // 0 미만이라면 단어 개수 10개 초과
-
-                for (int i = 0; i < makeCount; i++) {
-                    vocaList.remove(11 + i);    // 개수 만큼 삭제
-                }
-            }   // 새로 만들기 보단 특정 개수를 채우는 것이 좋다고 판단
-
-            log.info("vocabulary makeCount 개수 : " + makeCount);
-        }
         return vocaList;
     }
 
