@@ -13,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "OpenAI", description = "OpenAI 관련 API 입니다.")
 @RestController
@@ -79,10 +81,13 @@ public class OpenAIController {
     )
     @GetMapping("/getLearnings")
     @ResponseBody
-    public String getLearnings() {
+    public Map<String, String> getLearnings() {
         String topic = openAIService.getLearnings();
-        return topic;
+        Map<String, String> response = new HashMap<>();
+        response.put("topic", topic);
+        return response;
     }
+
 
 
     @Operation(
