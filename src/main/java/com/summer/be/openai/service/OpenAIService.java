@@ -6,7 +6,6 @@ import com.summer.be.openai.dao.LearningsRepository;
 import com.summer.be.openai.dao.SentencesRepository;
 import com.summer.be.openai.dao.VocabularyRepository;
 import com.summer.be.openai.dto.*;
-
 import com.summer.be.openai.entity.Learnings;
 import com.summer.be.openai.entity.Sentences;
 import com.summer.be.openai.entity.Vocabulary;
@@ -18,16 +17,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.*;
-import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -124,7 +117,7 @@ public class OpenAIService {
         return topic;
     }
 
-    public List<String> getVocabulary() {
+    public Map<String, String> getVocabulary() {
         // 가장 최근에 저장된 Vocabulary ID를 가져옴
         Long id = learningsRepository.findTopIdByOrderByIdDesc();
 
@@ -135,7 +128,14 @@ public class OpenAIService {
         Gson gson = new Gson();
         List<String> vocabularyList = gson.fromJson(vocabularyJson, List.class);
 
-        return vocabularyList;
+        Map<String, String> vocaData = new HashMap<>();
+
+        for(String s: vocabularyList) {
+            String example = getExampleSentence(s);
+            vocaData.put(s, example);
+        }
+
+        return vocaData;
     }   // 저장된 Voca 가져오기
 
 
@@ -152,4 +152,23 @@ public class OpenAIService {
 
         return sentencesList;
     }
+
+    public String getTranslate(String translate) {
+        String prompt = String.format("Please translate '%s' into Korean.", translate);
+        // Please translate 'Different dogs come in various breeds, like Labrador or Beagle.' into Korean.
+        String response = getCompletion(prompt);
+
+        return response;
+    }
+
+    public String getExampleSentence(String vocabulary) {
+        String prompt = String.format("Please make one English sentence containing ‘%s’.", vocabulary);
+
+        String response = getCompletion(prompt);
+        // Please make one English sentence containing ‘Voucher’.
+        String responseTrans = getTranslate(response);  // 영단어로 만들어진 영어 문장은 다시 한국어로 번형합니다.
+
+        return responseTrans;
+    }   // voca를 활용한 예문 문장 만들기 입니다.
+        // 예를 들어 보카 단어가 나오면 맞추어야 하는데, 보카가 포함된 문장을 생성 후 한국어로 번형합니다. 그 한국어 문장을 확인 후 영어 단어를 유추합니다.
 }
