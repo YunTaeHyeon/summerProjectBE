@@ -70,7 +70,7 @@ public class OpenAIService {
         headers.set("Content-Type", "application/json");
 
         Message userMessage = new Message("user", prompt);
-        OpenAIRequest request = new OpenAIRequest("ft:gpt-4o-mini-2024-07-18:personal::A7elY9ed", Collections.singletonList(userMessage));
+        OpenAIRequest request = new OpenAIRequest("ft:gpt-4o-mini-2024-07-18:personal:english-1001:ADT0KRUy", Collections.singletonList(userMessage));
 
         try {
             HttpEntity<OpenAIRequest> entity = new HttpEntity<>(request, headers);
