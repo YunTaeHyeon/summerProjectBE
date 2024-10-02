@@ -13,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "OpenAI", description = "OpenAI 관련 API 입니다.")
 @RestController
@@ -27,7 +29,7 @@ public class OpenAIController {
 
     @Operation(
             summary = "오늘의 수업 생성 부분입니다",
-            description = "주제를 생성하고 주제를 기반으로 자동으로 단어 10개와 문장 10개를 생성합니다."
+            description = "이 부분을 클릭하면 오늘의 주제와 단어, 문장을 생성합니다. [Post 요청 후 오늘의 문장 및 단어 확인 가능]"
     )
     @ApiResponse(
             responseCode = "200",
@@ -70,8 +72,8 @@ public class OpenAIController {
 
 
     @Operation(
-            summary = "문장 수업",
-            description = "오늘 생성한 추천을 기반으로 문장 10개를 생성합니다."
+            summary = "오늘의 주제",
+            description = "생성된 오늘의 주제입니다."
     )
     @ApiResponse(
             responseCode = "200",
@@ -79,23 +81,26 @@ public class OpenAIController {
     )
     @GetMapping("/getLearnings")
     @ResponseBody
-    public String getLearnings() {
+    public Map<String, String> getLearnings() {
         String topic = openAIService.getLearnings();
-        return topic;
+        Map<String, String> response = new HashMap<>();
+        response.put("topic", topic);
+        return response;
     }
 
 
     @Operation(
             summary = "단어 수업",
-            description = "오늘 생성한 추천을 기반으로 단어 10개를 생성합니다."
+            description = "오늘 생성한 추천을 기반으로 단어 10개를 생성합니다.(With 예문 문장)"
     )
     @ApiResponse(
             responseCode = "200",
             description = "Success Voca Get"
     )
     @GetMapping("/getVocabulary")
-    public List<String> getVocabulary() {
-        return openAIService.getVocabulary();
+    public Map<String, String> getVocabulary() {
+        Map<String, String> voca = openAIService.getVocabulary();
+        return voca;
     }
 
     @Operation(
@@ -110,4 +115,20 @@ public class OpenAIController {
     public List<String> getSentences() {
         return openAIService.getSentences();
     }
+
+    /*@Operation(
+            summary = "translate",
+            description = "생성된 단어로 만들어진 예문 영어의 번역과 영어 문장 번역이 생성됩니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Success translate"
+    )
+    @GetMapping("/translate")
+    public Map<String, String> translate(@RequestParam("translate") String translate) {
+        String korean = openAIService.getTranslate(translate);
+        Map<String, String> response = new HashMap<>();
+        response.put("translate", korean);
+        return response;
+    } */  // 번역 용, 왠지 사용 안할 것 같습니다.
 }
