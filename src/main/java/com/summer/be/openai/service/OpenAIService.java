@@ -179,7 +179,9 @@ public class OpenAIService {
             result.put("correct", "정답입니다.");
         } else {
             String prompt = String.format("The correct answer is '%s', but I answered '%s'.", answer, userAnswer);
-            result.put("wrong", prompt); // 실제 답변과 사용자의 답변을 대조 (이 부분 파인튜닝 작업 필요)
+
+            String response = getCompletion(prompt);
+            result.put("wrong", response); // 실제 답변과 사용자의 답변을 대조 (이 부분 파인튜닝 작업 필요)
         }
 
         return result;
