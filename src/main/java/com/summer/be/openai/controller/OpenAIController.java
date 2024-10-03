@@ -4,6 +4,7 @@ package com.summer.be.openai.controller;
 import com.summer.be.openai.entity.Learnings;
 import com.summer.be.openai.service.OpenAIService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -141,7 +142,8 @@ public class OpenAIController {
             description = "Success Create result"
     )
     @GetMapping("/wrong-answer")
-    public Map<String, String> getGrading(@RequestParam("answer") String answer, @RequestParam("userAnswer") String userAnswer) {
+    public Map<String, String> getGrading(@Parameter(description = "정답", required = true) @RequestParam("answer") String answer,
+                                          @Parameter(description = "사용자의 답변", required = true) @RequestParam("userAnswer") String userAnswer) {
         Map<String, String> result = openAIService.getAnswerHint(answer, userAnswer);
         return result;
     }   // 채점
