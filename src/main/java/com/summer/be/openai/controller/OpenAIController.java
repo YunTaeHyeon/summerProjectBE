@@ -130,5 +130,19 @@ public class OpenAIController {
         Map<String, String> response = new HashMap<>();
         response.put("translate", korean);
         return response;
-    } */  // 번역 용, 왠지 사용 안할 것 같습니다.
+    } */  // 번역 용, 왠지 사용 안할 것 같습니다. 필요 시 요청 바람
+
+    @Operation(
+            summary = "사용자가 말한 답변이 오답이라면 힌트를, 정답이라면 정답을 반환합니다.",
+            description = ""
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Success Create result"
+    )
+    @GetMapping("/wrong-answer")
+    public Map<String, String> getGrading(@RequestParam("answer") String answer, @RequestParam("userAnswer") String userAnswer) {
+        Map<String, String> result = openAIService.getAnswerHint(answer, userAnswer);
+        return result;
+    }   // 채점
 }
