@@ -70,7 +70,7 @@ public class OpenAIService {
         headers.set("Content-Type", "application/json");
 
         Message userMessage = new Message("user", prompt);
-        OpenAIRequest request = new OpenAIRequest("ft:gpt-4o-mini-2024-07-18:personal:english-1001:ADT0KRUy", Collections.singletonList(userMessage));
+        OpenAIRequest request = new OpenAIRequest("ft:gpt-4o-mini-2024-07-18:personal:english-1005:AEtzPTrY", Collections.singletonList(userMessage));
 
         try {
             HttpEntity<OpenAIRequest> entity = new HttpEntity<>(request, headers);
@@ -183,7 +183,6 @@ public class OpenAIService {
             String response = getCompletion(prompt);
             result.put("wrong", response); // 실제 답변과 사용자의 답변을 대조 (이 부분 파인튜닝 작업 필요)
         }
-
         return result;
     }
 }
