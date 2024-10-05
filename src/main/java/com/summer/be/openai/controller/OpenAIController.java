@@ -4,6 +4,7 @@ package com.summer.be.openai.controller;
 import com.summer.be.openai.entity.Learnings;
 import com.summer.be.openai.service.OpenAIService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -130,5 +131,20 @@ public class OpenAIController {
         Map<String, String> response = new HashMap<>();
         response.put("translate", korean);
         return response;
-    } */  // 번역 용, 왠지 사용 안할 것 같습니다.
+    } */  // 번역 용, 왠지 사용 안할 것 같습니다. 필요 시 요청 바람
+
+    @Operation(
+            summary = "사용자가 말한 답변이 오답이라면 힌트를, 정답이라면 정답을 반환합니다.",
+            description = ""
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Success Create result"
+    )
+    @GetMapping("/wrong-answer")
+    public Map<String, String> getGrading(@Parameter(description = "정답", required = true) @RequestParam("answer") String answer,
+                                          @Parameter(description = "사용자의 답변", required = true) @RequestParam("userAnswer") String userAnswer) {
+        Map<String, String> result = openAIService.getAnswerHint(answer, userAnswer);
+        return result;
+    }   // 채점
 }

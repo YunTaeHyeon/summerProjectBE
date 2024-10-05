@@ -70,7 +70,7 @@ public class OpenAIService {
         headers.set("Content-Type", "application/json");
 
         Message userMessage = new Message("user", prompt);
-        OpenAIRequest request = new OpenAIRequest("ft:gpt-4o-mini-2024-07-18:personal:english-1001:ADT0KRUy", Collections.singletonList(userMessage));
+        OpenAIRequest request = new OpenAIRequest("ft:gpt-4o-mini-2024-07-18:personal:english-1005:AEtzPTrY", Collections.singletonList(userMessage));
 
         try {
             HttpEntity<OpenAIRequest> entity = new HttpEntity<>(request, headers);
@@ -170,5 +170,19 @@ public class OpenAIService {
 
         return responseTrans;
     }   // voca를 활용한 예문 문장 만들기 입니다.
-        // 예를 들어 보카 단어가 나오면 맞추어야 하는데, 보카가 포함된 문장을 생성 후 한국어로 번형합니다. 그 한국어 문장을 확인 후 영어 단어를 유추합니다.
+    // 예를 들어 보카 단어가 나오면 맞추어야 하는데, 보카가 포함된 문장을 생성 후 한국어로 번형합니다. 그 한국어 문장을 확인 후 영어 단어를 유추합니다.
+
+    public Map<String, String> getAnswerHint(String answer, String userAnswer) {
+        Map<String, String> result = new HashMap<>();
+
+        if (answer.equals(userAnswer)) {
+            result.put("correct", "정답입니다.");
+        } else {
+            String prompt = String.format("The actual answer is '%s', but the user answered '%s'.", answer, userAnswer);
+
+            String response = getCompletion(prompt);
+            result.put("wrong", response); // 실제 답변과 사용자의 답변을 대조 (이 부분 파인튜닝 작업 필요)
+        }
+        return result;
+    }
 }
